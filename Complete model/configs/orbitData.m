@@ -8,10 +8,10 @@ function orbit_data = orbitData()
 
 
     % Orbit semi-major axis [km]
-    a = 1e4;
+    a = 3e4;
 
     % Orbit eccentricity [-]
-    e = 0.5;
+    e = 0.3;
 
     % Orbit inclination [rad]
     i = pi/6;

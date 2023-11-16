@@ -1,16 +1,9 @@
 clc; clearvars; close all;
 
-sim_options.SolverType = 'Fixed-step';      % Set the solver type to Fixed-step
-sim_options.Solver = 'ode4';                % Select ode4 as solver
-sim_options.FixedStep = '0.1';              % Select a time step
-sim_options.StartTime = '0';                % Start from 0 seconds [default]
-% sim_options.StopTime = '5*9.952014160347722e+03';       % End time in seconds
-sim_options.StopTime = '9.952014160347722e+03';       % End time in seconds
-
 addpath("configs\");
 addpath("utils\");
 
-%% Data
+%% Load data
 
 astro_data = astronomicData;
 sc_data = spaceCraftData;
@@ -20,6 +13,14 @@ pert_data = perturbationData(orbit_data.n_sc);
 
 %% Simulation
 
+% Simulink options
+sim_options.SolverType = 'Fixed-step';      % Set the solver type to Fixed-step
+sim_options.Solver = 'ode4';                % Select ode4 as solver
+sim_options.FixedStep = '0.1';              % Select a time step
+sim_options.StartTime = '0';                % Start from 0 seconds [default]
+sim_options.StopTime = 'orbit_data.T';       % End time in seconds
+
+% Call simulink model
 out = sim("Model.slx", sim_options);
 
 %% Post processing

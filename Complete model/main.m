@@ -19,7 +19,7 @@ sim_options.SolverType = 'Fixed-step';      % Set the solver type to Fixed-step
 sim_options.Solver = 'ode4';                % Select ode4 as solver
 sim_options.FixedStep = '0.5';              % Select a time step
 sim_options.StartTime = '0';                % Start from 0 seconds [default]
-sim_options.StopTime = 'orbit_data.T';       % End time in seconds
+sim_options.StopTime = 'orbit_data.T';      % End time in seconds
 
 % Call simulink model
 out = sim("Model.slx", sim_options);
@@ -29,10 +29,20 @@ out = sim("Model.slx", sim_options);
 % Plot - om
 figure()
 plot(out.time, out.dynamics_omega, 'LineWidth', 1);
-grid on;
+grid on
 xlabel("Time\ [s]", 'Interpreter','latex');
 ylabel("$\omega$ [rad/s]", 'Interpreter','latex');
 legend("$\omega_x$", "$\omega_y$", "$\omega_z$", 'Location','northeast', 'Interpreter', 'latex');
+
+% Plot - disturbs
+figure()
+plot(out.time, vecnorm(out.perturbations_I_M_GG, 2, 2), 'LineWidth', 1);
+grid on, hold on
+plot(out.time, vecnorm(out.perturbations_I_M_Mag, 2, 2), 'LineWidth', 1);
+plot(out.time, vecnorm(out.perturbations_I_M_SRP, 2, 2), 'LineWidth', 1);
+xlabel("Time\ [s]", 'Interpreter','latex');
+ylabel("$\dot{omega}$ [rad/s]", 'Interpreter','latex');
+legend("$GG$", "$MAG$", "$SRP$", 'Location','northeast', 'Interpreter', 'latex');
 
 % Plot - kinetic energy
 figure()

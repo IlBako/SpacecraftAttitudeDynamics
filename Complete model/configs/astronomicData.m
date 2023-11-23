@@ -11,8 +11,8 @@ function astro_data = astronomicData()
     % Planetary constants of Earth (mu = G*mass) [km^3/s^2]
     muE = astroConstants(13);
 
-    % Speed of light in the vacuum [km/s]
-    c = astroConstants(5);
+    % Speed of light in the vacuum [m/s]
+    c = astroConstants(5)*1e3;
 
     % Earth's mean radius [Km]
     R_earth = astroConstants(23);

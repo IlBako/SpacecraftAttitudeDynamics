@@ -9,8 +9,8 @@ function sc_data = spaceCraftData()
     %   - rF:       Distance of body parts from baricentre [m]
 
     % Principal moments of Intertia [Kg*m^2]
-    I = [100.9 25.1 91.6] * 1e-2;
-    % I = [0.08 0.06 0.04];
+    % I = [100.9 25.1 91.6] * 1e-2;
+    I = [0.04 0.06 0.08];
     % I = [0.0700 0.0504 0.0109];
     % Principal inertia matrix [Kg*m^2]
     I_mat = I.*eye(3);

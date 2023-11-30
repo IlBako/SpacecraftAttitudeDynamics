@@ -10,7 +10,7 @@ clc; clearvars; close all;
     
         
     Notes: 
-    -All the matrices calculated are [n x m];
+    -All the matrices are [n x m];
     -g and h are in nT.
 
     References:
@@ -28,6 +28,8 @@ clc; clearvars; close all;
 N = 13;
 
 S_nm = zeros(N, N+1);
+
+% First value: S_(0,0)
 S_nm(1,1) = 1;
 
 % First column: S_(n,0)
@@ -36,7 +38,6 @@ for n = 2:N
 end
 
 % Remaining components: S_(n,m)
-
 for n = 1:N
     for j = 2:n+1
         m = j-1;    % m starts from 0 and goes to n, the index j goes from 1 to n+1
@@ -47,7 +48,9 @@ end
 %% Load g and h coefficients from igrf13
 
 coeffs = readtable("data\igrf13coeffs.txt", 'VariableNamingRule','preserve');
+% As the file contains all coefficients from various years, select only the 2020 ones
 coeffs = coeffs(2:end, [1:3 end-1]);
+
 g = zeros(n, n+1);
 h = zeros(n, n+1);
 
@@ -80,6 +83,8 @@ for n = 2:N
     end
 end
 
-%% Generate output file
+%% Output file generation
+% As this data is independent from the orbit, it can be computed once and
+% stored in a .mat file so it can be fastly loaded for the simulations
 
-save("WMD.mat", 'K', 'g', 'h', '-mat');
+save("data\WMD.mat", 'N', 'K', 'g', 'h', '-mat');

@@ -7,6 +7,7 @@ function astro_data = astronomicData()
     %   - n_sun:    Average rotational rate of Earth's orbit around the Sun [rad/s]
     %   - eps:      Earth's orbit inclination [rad]
     %   - R_sun:    Earth's orbit mean radius (1AU) [km]
+    %   - wE:       Earth's angular velocity around it's axis [rad/s]
 
     % Planetary constants of Earth (mu = G*mass) [km^3/s^2]
     muE = astroConstants(13);
@@ -31,6 +32,9 @@ function astro_data = astronomicData()
     % Earth's orbit mean radius (1AU) [km]
     r_sun = astroConstants(2);
 
+    % Earth angular velocity around it's axis [rad/s]
+    wE = deg2rad(15.04)/3600;
+
     astro_data.muE = muE;
     astro_data.c = c;
     astro_data.R_earth = R_earth;
@@ -38,4 +42,5 @@ function astro_data = astronomicData()
     astro_data.n_sun = n_sun;
     astro_data.eps = epsilon;
     astro_data.R_sun = r_sun;
+    astro_data.wE = wE;
 end

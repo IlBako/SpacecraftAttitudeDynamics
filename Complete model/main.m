@@ -19,7 +19,7 @@ worldMag_data = load("data\WMD.mat");
 % Simulink options
 sim_options.SolverType = 'Fixed-step';      % Set the solver type to Fixed-step
 sim_options.Solver = 'ode4';                % Select ode4 as solver
-sim_options.FixedStep = 'orbit_data.T / 100000';              % Select a time step
+sim_options.FixedStep = '0.1';              % Select a time step
 sim_options.StartTime = '0';                % Start from 0 seconds [default]
 sim_options.StopTime = 'orbit_data.T';      % End time in seconds
 

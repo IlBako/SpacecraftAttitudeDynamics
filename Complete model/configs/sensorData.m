@@ -2,7 +2,7 @@ function sensor_data = sensorData()
 
     %% Magnetometer 
 
-    % [T] Full scale measurement of the sensor (range is +-100e-6 T)
+    % [T] Full scale measurement of the sensor (range is +-)
     magnetometer.FSS = 100e-6;
     % [%] Accuracy of the sensor
     magnetometer.acc = 0.5;
@@ -38,4 +38,26 @@ function sensor_data = sensorData()
     %% Output
 
     sensor_data.magnetometer = magnetometer;
+    %% % [deg] Full scale measurement of the sensor (range is +-)
+    horizon.FSS.pitch =5.5 ;
+    horizon.FSS.roll =2.5;
+    % [deg] Accuracy of the sensor
+    horizon.acc =0.07 ;
+    % % [%] Non-linearity of the sensor
+    % horizon.lin = ;
+    % % [] Sensitivity of the sensor
+    % horizon.sens = ;
+    % % [] Standard deviation of the sensor
+    % horizon.std_dev = sqrt(horizon.acc ^ 2 + horizon.lin^2)/sqrt(3) * horizon.FSS / 100;
+    % % [] Variance of the sensor
+    % horizon.variance = magnetometer.std_dev^2;
+    % % [V] Quantization interval in Volt
+    % V_quant = ;
+    % % [] Quantization in Tesla
+    % horizon.T_quant = V_quant/horizon.sens;
+    % [Hz] Frequency of the sensor
+    horizon.freq = 10;
+    
+    sensor_data.horizon = horizon;
+
 end

@@ -2,6 +2,7 @@ function sc_data = spaceCraftData()
     % Output a struct containing all the data relative to the spacecraft:
     %   - I_mat:    Principal moments of Inertia matrix [Kg*m^2]
     %   - I_inv:    Inverse of principal inertia matrix [(Kg*m^2)^-1]
+    %   - Ir:       Inertia moment of inertia wheel [Kg*m^2]
     %   - NB:       Normals to the body [-]
     %   - rhoS:     Specular reflection coefficient [-]
     %   - rhoD:     Diffusione reflection coefficient [-]
@@ -18,6 +19,9 @@ function sc_data = spaceCraftData()
     I_inv = inv(I_mat);
     % NOTE: The inverse is calculated before hand to save computation time
     % as the inertia matrix does not change during the mission
+
+    % Inertia moment of inertia wheel [Kg*m^2]
+    Ir = [0.005 0 0];
 
     % Normals to body 
     NB = [ 1  0  0;      % Body 1       
@@ -60,6 +64,7 @@ function sc_data = spaceCraftData()
 
     sc_data.I_mat = I_mat;
     sc_data.I_inv = I_inv;
+    sc_data.Ir = Ir;
     sc_data.NB = NB;
     sc_data.rhoS = rhoS;
     sc_data.rhoD = rhoD;

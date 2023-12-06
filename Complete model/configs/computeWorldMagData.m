@@ -51,15 +51,20 @@ coeffs = readtable("data\igrf13coeffs.txt", 'VariableNamingRule','preserve');
 % As the file contains all coefficients from various years, select only the 2020 ones
 coeffs = coeffs(2:end, [1:3 end-1]);
 
-g = zeros(n, n+1);
-h = zeros(n, n+1);
+g = zeros(N, N+1);
+h = zeros(N, N+1);
 
 for i=1:size(coeffs, 1)
+    n = table2array(coeffs(i, 2));
+    m = table2array(coeffs(i, 3));
+    if n > N
+        break
+    end
     if strcmp(cell2mat(table2array(coeffs(i, 1))), 'g')
-        g(table2array(coeffs(i, 2)), table2array(coeffs(i, 3))+1) = table2array(coeffs(i, 4));
+        g(n, m+1) = table2array(coeffs(i, 4));
     end
     if strcmp(cell2mat(table2array(coeffs(i, 1))), 'h')
-        h(table2array(coeffs(i, 2)), table2array(coeffs(i, 3))+1) = table2array(coeffs(i, 4));
+        h(n, m+1) = table2array(coeffs(i, 4));
     end
 end
 

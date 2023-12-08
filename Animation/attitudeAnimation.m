@@ -82,7 +82,7 @@ for i = 1:length(n_start:step_size:n_end)
     end
 end
 
-h = figure;
+h = figure("WindowState", "maximized");
 
 start = 1;
 k = 0;

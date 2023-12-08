@@ -1,14 +1,16 @@
-function [] = attitudeAnimation2(A, P, theta, stlName, percent_start, step_size, animation_length, cam_choice)
+function [] = attitudeAnimation3(A, P, theta, MAG, EHS, stlName, percent_start, step_size, animation_length, cam_choice)
 
 % creates an animation with attitude and position
 %
-% [] = attitudeAnimation2(A1, A2, stlName, percent_start, step_size, animation_lenght)
+% [] = attitudeAnimation3(A, P, theta, MAG, EHS, stlName, percent_start, step_size, animation_length, cam_choice)
 %
 % Input arguments:
 % ----------------------------------------------------------------
-% A1                    [3x3xN]     A matrix                        [-]
+% A                     [3x3xN]     A matrix                        [-]
 % P                     [Nx3]       Position matrix                 [-]
 % theta                 [Nx1]       Theta angle vector              [-]
+% MAG                   [Nx3]       MAG body matrix                 [-]
+% EHS                   [Nx3]       EHS body matrix                 [-]
 % stlName               [1x1]       Location of .stl file           [str]
 % percent_start         [1x1]       Where to start                  [%]
 % step_size             [1x1]       Step size                       [-]
@@ -35,12 +37,15 @@ if n_end > A_len
 end
 
 % calculate rotations
+EHS_inertial_vect = zeros(length(n_start:step_size:n_end), 3);
+MAG_inertial_vect = zeros(length(n_start:step_size:n_end), 3);
 k = 0;
 TR_frame_vect(1:length(n_start:step_size:n_end), 1) = {NaN(1,1)};
 for i = n_start:step_size:n_end
     k = k + 1;
-    [TR_frame1] = stlHandle_internal(TR, A(1:3,1:3,i), P(i,:));
-    TR_frame_vect{k} = TR_frame1;
+    TR_frame_vect{k} = stlHandle_internal(TR, A(1:3,1:3,i), P(i,:));
+    EHS_inertial_vect(k, :) = A(1:3,1:3,i) \ EHS(i, :)';
+    MAG_inertial_vect(k, :) = A(1:3,1:3,i) \ MAG(i, :)';
 end
 
 % calculate max frame
@@ -129,6 +134,12 @@ for i=n_start:step_size:n_end
     vect = 200*[A(1:3,3,i)'; 0,0,0] + [P(i,:); P(i,:)];
     d = plot3(vect(:,1), vect(:,2), vect(:,3), Color="blu"); % z
 
+    % sensors
+    vect = 200*EHS_inertial_vect(k, :);
+    e = quiver3(P(i,1), P(i,2), P(i,3), vect(1), vect(2), vect(3), Color="red", LineWidth=1);
+    vect = 200*MAG_inertial_vect(k, :);
+    f = quiver3(P(i,1), P(i,2), P(i,3), vect(1), vect(2), vect(3), Color="red", LineWidth=1);
+
     xlim([x_min x_max])
     ylim([y_min y_max])
     zlim([z_min z_max])
@@ -150,6 +161,8 @@ for i=n_start:step_size:n_end
     delete(b)
     delete(c)
     delete(d)
+    delete(e)
+    delete(f)
 end
 
 close(h)

@@ -11,7 +11,8 @@ function sc_data = spaceCraftData()
 
     % Principal moments of Intertia [Kg*m^2]
     % I = [100.9 25.1 91.6] * 1e-2;
-    I = [0.04 0.06 0.08];
+    % I = [0.04 0.06 0.08];
+    I = [279 945 1085];
     % I = [0.0700 0.0504 0.0109];
     % Principal inertia matrix [Kg*m^2]
     I_mat = I.*eye(3);
@@ -21,7 +22,7 @@ function sc_data = spaceCraftData()
     % as the inertia matrix does not change during the mission
 
     % Inertia moment of inertia wheel [Kg*m^2]
-    Ir = [0.005 0 0];
+    Ir = [3.183e-2 0 0];
 
     % Normals to body 
     NB = [ 1  0  0;      % Body 1       

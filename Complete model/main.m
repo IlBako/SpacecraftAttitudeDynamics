@@ -15,6 +15,18 @@ pert_data = perturbationData(orbit_data.n_sc);
 sensor_data = sensorData;
 worldMag_data = load("data\WMD.mat");
 
+A_target=[1,0,0;0,1,0;0,0,1]; %vogliamo puntare la terra
+
+
+Kpx=1;
+Kpy=2;
+Kpz=3;
+
+Kdx=1;
+Kdy=2;
+Kdz=3;
+
+
 %% Simulation
 
 % Simulink options

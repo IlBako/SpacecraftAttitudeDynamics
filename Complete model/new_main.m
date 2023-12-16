@@ -56,20 +56,21 @@ sim_options.StopTime = '100*orbit_data.T';      % End time in seconds
 switch alg_idx
 
     case 1  % De-tumbling
-        algorithm = alg_vec{i};
-        actuator_data.max_dipole = 150; % [A*m^2]
-        de_tumb = sim("Model.slx", sim_options);        
+        algorithm = alg_vec{1};
+        actuator_data.max_dipole = 120; % [A*m^2]
+        de_tumb = sim("Model.slx", sim_options);   
 
     case 2  % Pointing
         sim_options.StopTime = 'orbit_data.T';
 
     case 3  % De-tumbling + pointing
-        algorithm = alg_vec{i};
-        actuator_data.max_dipole = 150; % [A*m^2]
+        algorithm = alg_vec{1};
+        actuator_data.max_dipole = 120; % [A*m^2]
         de_tumb = sim("Model.slx", sim_options);
 
     case 4  % No Control
-        sim_options.StopTime = 'orbit_data.T';
+        algorithm = alg_vec{4};
+        sim_options.StopTime = '10*orbit_data.T';
         actuator_data.max_dipole = 0; % [A*m^2]
         no_cont = sim("Model.slx", sim_options);
 
@@ -80,17 +81,3 @@ end
 if strcmp(plot_gen, 'yes')
     generatePlots;
 end
-%% test
-A_target=[1,0,0;0,1,0;0,0,1]; %vogliamo puntare la terra
-
-
-Kpx=1;
-Kpy=2;
-Kpz=3;
-
-Kdx=1;
-Kdy=2;
-Kdz=3;
-
-
-

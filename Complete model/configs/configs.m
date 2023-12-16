@@ -1,3 +1,5 @@
+rng("default")
+
 astro_data = astronomicData;
 sc_data = spaceCraftData;
 orbit_data = orbitData;

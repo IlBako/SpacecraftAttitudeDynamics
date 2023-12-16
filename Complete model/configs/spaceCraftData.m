@@ -22,7 +22,7 @@ function sc_data = spaceCraftData()
     % as the inertia matrix does not change during the mission
 
     % Inertia moment of inertia wheel [Kg*m^2]
-    Ir = [3.183e-2 0 0];
+    Ir = [0 0 3.183e-2];
 
     % Normals to body 
     NB = [ 1  0  0;      % Body 1       

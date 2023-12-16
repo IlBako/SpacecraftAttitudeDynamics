@@ -16,6 +16,7 @@ function in_cond = initialConditions(n_eth)
     theta0 = 0;
     % Initial inertia wheel angular velocity [rad/s]
     wr0 = 0;
+    % wr0 = 8.8234;
 
     in_cond.w0 = w0;
     in_cond.A0 = A0;

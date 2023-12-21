@@ -24,10 +24,18 @@ if length(A1) ~= length(A2)
 end
 
 A_len = length(A1);
-n_start = ceil(A_len * percent_start * 1e-2);
-n_end = n_start + animation_length;
-if n_end > A_len
+if percent_start == 0
+    n_start = 1;
+else
+    n_start = ceil(A_len * percent_start * 1e-2);
+end
+if animation_length == 0
     n_end = A_len;
+else
+    n_end = n_start + animation_length;
+    if n_end > A_len
+        n_end = A_len;
+    end
 end
 
 % calculate rotations

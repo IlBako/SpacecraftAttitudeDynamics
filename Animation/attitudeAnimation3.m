@@ -31,9 +31,13 @@ if percent_start == 0
 else
     n_start = ceil(A_len * percent_start * 1e-2);
 end
-n_end = n_start + animation_length;
-if n_end > A_len
+if animation_length == 0
     n_end = A_len;
+else
+    n_end = n_start + animation_length;
+    if n_end > A_len
+        n_end = A_len;
+    end
 end
 
 % calculate rotations

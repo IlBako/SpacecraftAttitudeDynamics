@@ -29,7 +29,7 @@ alg_vec = {'De-tumbling', 'Pointing', 'De-tumbling + pointing', 'No Control'};
 %         "(please answer with 'png', 'pdf' or 'no'):  ", 's');
 % end
 
-alg_idx = 2; plot_gen = 'yes'; save_plots = 'no';
+alg_idx = 2; plot_gen = 'no'; save_plots = 'no';
 
 %% Run configs
 
@@ -39,7 +39,8 @@ configs;
 
 % Initial angular velocity (body frame)
 % in_cond.w0 = ((5-1)*rand(3,1) + 1) .* 1e-2;
-in_cond.w0 = [3e-2 -1e-2 4e-2];
+% in_cond.w0 = [3e-2 -1e-2 4e-2];
+in_cond.w0 = [pi/3 pi/6 pi/4.5];
 
 % Initial inertia wheel angular velocity
 in_cond.wr0 = 0;
@@ -50,8 +51,10 @@ in_cond.q0 = dcm2quat(in_cond.A0);
 % alphaSS=1/50;
 % ctrFreq = 1/10;
 % toll = 1e-1;
-pointing_k1 = -sc_data.I_mat(3,3)/sc_data.I_mat(1,1)*[1 1 1];
-pointing_k2 = 0.5*diag(sc_data.I_mat) .* [1 1 1]';
+pointing_k1 = sc_data.I_mat(3,3)/sc_data.I_mat(1,1)*[1 1 1];
+pointing_k2 = -0.01*diag(sc_data.I_mat) .* [1 1 1]';
+% pointing_k1 = sc_data.I_mat(3,3)/sc_data.I_mat(1,1)*[1 1 1];
+% pointing_k2 = -0.5*diag(sc_data.I_mat) .* [1 1 1]';
 
 [rr, vv] = kep2car(orbit_data.a, orbit_data.e, orbit_data.i, 0,0,0, astro_data.muE);
 in_x = rr/norm(rr); in_z = cross(rr, vv)/norm(cross(rr, vv)); in_y = cross(in_z, in_x)/norm(cross(in_z, in_x));
@@ -77,10 +80,10 @@ switch alg_idx
 
     case 2  % Pointing
         algorithm = alg_vec{2};
-        sim_options.StopTime = 'orbit_data.T';
+        sim_options.StopTime = '5*orbit_data.T';
         actuator_data.max_dipole = 200;
-        % in_cond.w0 = [0 0 astro_data.n_eth];
-        in_cond.A0 = A_LN0;
+        in_cond.w0 = [1e-3 1e-4 1e-3];
+        % in_cond.A0 = A_LN0;
         point = sim("Model.slx", sim_options);
 
     case 3  % De-tumbling + pointing

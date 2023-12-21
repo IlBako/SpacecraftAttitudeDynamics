@@ -31,7 +31,7 @@ in_cond.q0 = dcm2quat(in_cond.A0);
 % Kdz=-1e1;
 
 pointing_k1 = -sc_data.I_mat(3,3)/sc_data.I_mat(1,1)*[1 1 1];
-pointing_k2 = 0.5*diag(sc_data.I_mat) .* [1 1 1]';
+pointing_k2 = -0.5*diag(sc_data.I_mat) .* [1 1 1]';
 
 %% Simulation
 

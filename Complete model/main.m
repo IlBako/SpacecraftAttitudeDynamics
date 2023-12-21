@@ -15,17 +15,23 @@ pert_data = perturbationData(orbit_data.n_sc);
 sensor_data = sensorData;
 worldMag_data = load("data\WMD.mat");
 
+% For pointing n should be replaced by theta dot when calculating the LVLH
+% frame
+
 A_target=[1,0,0;0,1,0;0,0,1]; %vogliamo puntare la terra
+algorithm = 'No control';
+in_cond.q0 = dcm2quat(in_cond.A0);
 
+% Kpx=-1;
+% Kpy=-1;
+% Kpz=-1;
+% 
+% Kdx=-1e1;
+% Kdy=-1e1;
+% Kdz=-1e1;
 
-Kpx=1;
-Kpy=2;
-Kpz=3;
-
-Kdx=1;
-Kdy=2;
-Kdz=3;
-
+pointing_k1 = -sc_data.I_mat(3,3)/sc_data.I_mat(1,1)*[1 1 1];
+pointing_k2 = 0.5*diag(sc_data.I_mat) .* [1 1 1]';
 
 %% Simulation
 

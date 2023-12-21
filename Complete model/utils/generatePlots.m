@@ -2,6 +2,8 @@ if exist("de_tumb", 'var')
     out = de_tumb;
 elseif exist("no_cont", 'var')
     out = no_cont;
+elseif exist("point", 'var')
+    out = point;
 end
 
 % Plot - om

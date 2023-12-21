@@ -6,10 +6,11 @@ function in_cond = initialConditions(n_eth)
     %   - wr0:      Initial inertia wheel angular velocity [rad/s]
 
     % Initial angular velocity [rad/s]
-    w0 = [1e-6 1e-6 n_eth];
+    % w0 = [1e-6 1e-6 n_eth];
     % w0 = [3e-2 1e-2 3e-2];
     % w0 = [pi/2 pi/3 pi/6];
     % w0 = [0.45 0.52 0.55];
+    w0 = [0.5e-3 1e-4 0.9e-3];
     % Initial dcm attitude [-]
     A0 = eye(3);
     % Initial position on orbit [rad]

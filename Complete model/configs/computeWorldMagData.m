@@ -1,4 +1,4 @@
-clc; clearvars; close all;
+clc; clearvars -except gn hn; close all;
 %{
     Compute the Guassian normalized form of IGRF coefficients up to 
     order 13 and pre-compute the K matrix needed for the on-line calculation of
@@ -73,7 +73,7 @@ end
 for i=1:N
     for j=1:N+1
         g(i,j) = S_nm(i,j) * g(i,j);
-        h(i,j) = S_nm(i,j) * g(i,j);
+        h(i,j) = S_nm(i,j) * h(i,j);
     end
 end
 

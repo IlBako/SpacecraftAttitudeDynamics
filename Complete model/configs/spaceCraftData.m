@@ -72,4 +72,6 @@ function sc_data = spaceCraftData()
     sc_data.rhoD = rhoD;
     sc_data.A = A_sc;
     sc_data.rF = rF;
+    sc_data.magnetorquer = 80; %[Am^2] linear dipole moment 
+    sc_data.wr = (3600*60)/6.28, %[rad/s] nominal rotation speed
 end

@@ -41,8 +41,8 @@ function sensor_data = sensorData()
     %% % [deg] Full scale measurement of the sensor (range is +-)
     horizon.FSS.pitch =5.5 ;
     horizon.FSS.roll =2.5;
-    % [deg] Accuracy of the sensor
-    horizon.acc =0.07 ;
+    % [rad] Accuracy of the sensor
+    horizon.acc =deg2rad(0.07) ;
     % % [%] Non-linearity of the sensor
     % horizon.lin = ;
     % % [] Sensitivity of the sensor

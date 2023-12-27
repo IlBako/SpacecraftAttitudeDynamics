@@ -46,7 +46,8 @@ function sc_data = spaceCraftData()
     rhoD = repmat(0.1, 10, 1);
 
     % Surface area [m^2]
-    A_body = [6e-2*ones(4, 1); 4e-2*ones(2, 1)];
+    % A_body = [6e-2*ones(4, 1); 4e-2*ones(2, 1)];
+    A_body = [0.64;0.4;0.64;0.4; 0.4*ones(2,1)];
     A_panel = 12e-2*ones(4,1);
     A_sc = [A_body; A_panel];
 
@@ -64,6 +65,9 @@ function sc_data = spaceCraftData()
     % convert to meters
     rF = rF * 1e-2;
 
+    % Drag coefficient
+    cD = 2.1;
+
     sc_data.I_mat = I_mat;
     sc_data.I_inv = I_inv;
     sc_data.Ir = Ir;
@@ -73,5 +77,7 @@ function sc_data = spaceCraftData()
     sc_data.A = A_sc;
     sc_data.rF = rF;
     sc_data.magnetorquer = 80; %[Am^2] linear dipole moment 
-    sc_data.wr = (3600*60)/6.28, %[rad/s] nominal rotation speed
+    sc_data.wr = (3600*60)/6.28; %[rad/s] nominal rotation speed
+    sc_data.NumFaces = size(NB, 1);
+    sc_data.cD = cD;
 end

@@ -29,7 +29,7 @@ alg_vec = {'De-tumbling', 'Pointing', 'De-tumbling + pointing', 'No Control'};
 %         "(please answer with 'png', 'pdf' or 'no'):  ", 's');
 % end
 
-alg_idx = 2; plot_gen = 'yes'; save_plots = 'no';
+alg_idx = 1; plot_gen = 'yes'; save_plots = 'no';
 
 %% Run configs
 
@@ -75,27 +75,25 @@ switch alg_idx
 
     case 1  % De-tumbling
         algorithm = alg_vec{1};
-        actuator_data.max_dipole = 120; % [A*m^2]
+        actuator_data.hr_nom = 0;
         de_tumb = sim("Model.slx", sim_options);   
 
     case 2  % Pointing
         algorithm = alg_vec{2};
         sim_options.StopTime = '5*orbit_data.T';
-        actuator_data.max_dipole = 200;
-        in_cond.w0 = [2e-3 -3e-3 -2e-5];
+        % in_cond.w0 = [2e-3 -3e-3 -2e-5];
         % in_cond.A0 = A_LN0;
         point = sim("Model.slx", sim_options);
 
     case 3  % De-tumbling + pointing
         algorithm = alg_vec{1};
-        actuator_data.max_dipole = 120; % [A*m^2]
+        actuator_data.hr_nom = 0;
         de_tumb = sim("Model.slx", sim_options);
 
     case 4  % No Control
         algorithm = alg_vec{4};
         sim_options.StopTime = '10*orbit_data.T';
         in_cond.w0 = [4e-4 3e-3 3e-4];
-        actuator_data.max_dipole = 0; % [A*m^2]
         no_cont = sim("Model.slx", sim_options);
 
 end

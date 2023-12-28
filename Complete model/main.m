@@ -13,6 +13,7 @@ orbit_data = orbitData;
 in_cond = initialConditions(astro_data.n_eth);
 pert_data = perturbationData;
 sensor_data = sensorData;
+actuator_data = actuatorData;
 worldMag_data = load("data\WMD.mat");
 
 % For pointing n should be replaced by theta dot when calculating the LVLH
@@ -40,7 +41,7 @@ sim_options.SolverType = 'Fixed-step';      % Set the solver type to Fixed-step
 sim_options.Solver = 'ode4';                % Select ode4 as solver
 sim_options.FixedStep = '0.1';              % Select a time step less than or equal to the minimum step size
 sim_options.StartTime = '0';                % Start from 0 seconds [default]
-sim_options.StopTime = '1*orbit_data.T';      % End time in seconds
+sim_options.StopTime = '5*orbit_data.T';      % End time in seconds
 
 % Call simulink model
 out = sim("Model.slx", sim_options);

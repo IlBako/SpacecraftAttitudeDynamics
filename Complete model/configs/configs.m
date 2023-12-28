@@ -6,4 +6,5 @@ orbit_data = orbitData;
 in_cond = initialConditions(astro_data.n_eth);
 pert_data = perturbationData;
 sensor_data = sensorData;
+actuator_data = actuatorData;
 worldMag_data = load("data\WMD.mat");

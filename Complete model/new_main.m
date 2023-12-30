@@ -29,7 +29,7 @@ alg_vec = {'De-tumbling', 'Pointing', 'De-tumbling + pointing', 'No Control'};
 %         "(please answer with 'png', 'pdf' or 'no'):  ", 's');
 % end
 
-alg_idx = 1; plot_gen = 'yes'; save_plots = 'no';
+alg_idx = 2; plot_gen = 'yes'; save_plots = 'no';
 
 %% Run configs
 
@@ -47,12 +47,14 @@ in_cond.wr0 = 0;
 
 in_cond.q0 = dcm2quat(in_cond.A0);
 
-% alphaHS=1/10;
-% alphaSS=1/50;
-% ctrFreq = 1/10;
-% toll = 1e-1;
-pointing_k1 = sc_data.I_mat(3,3)/sc_data.I_mat(1,1)*[1 1 1];
-pointing_k2 = -0.01*diag(sc_data.I_mat) .* [1 1 1]';
+alphaHS=1/10;
+alphaSS=1/50;
+ctrFreq = 1/10;
+toll = 1e-1;
+% pointing_k1 = sc_data.I_mat(3,3)/sc_data.I_mat(1,1)*[1 1 1];
+% pointing_k2 = -0.01*diag(sc_data.I_mat) .* [1 1 1]';
+pointing_k1 = 0;
+pointing_k2 = 0;
 % pointing_k1 = sc_data.I_mat(3,3)/sc_data.I_mat(1,1)*[1 1 1];
 % pointing_k2 = -0.5*diag(sc_data.I_mat) .* [1 1 1]';
 
@@ -81,7 +83,7 @@ switch alg_idx
     case 2  % Pointing
         algorithm = alg_vec{2};
         sim_options.StopTime = '5*orbit_data.T';
-        % in_cond.w0 = [2e-3 -3e-3 -2e-5];
+        in_cond.w0 = [2e-3 -3e-3 -2e-5];
         % in_cond.A0 = A_LN0;
         point = sim("Model.slx", sim_options);
 

@@ -23,6 +23,8 @@ A_target=[1,0,0;0,1,0;0,0,1]; %vogliamo puntare la terra
 algorithm = 'No control';
 in_cond.q0 = dcm2quat(in_cond.A0);
 
+alphaSS = 1/30; alphaHS = 1/5; toll = 1e-2;
+
 % Kpx=-1;
 % Kpy=-1;
 % Kpz=-1;
@@ -41,7 +43,7 @@ sim_options.SolverType = 'Fixed-step';      % Set the solver type to Fixed-step
 sim_options.Solver = 'ode4';                % Select ode4 as solver
 sim_options.FixedStep = '0.1';              % Select a time step less than or equal to the minimum step size
 sim_options.StartTime = '0';                % Start from 0 seconds [default]
-sim_options.StopTime = '5*orbit_data.T';      % End time in seconds
+sim_options.StopTime = '3*orbit_data.T';      % End time in seconds
 
 % Call simulink model
 out = sim("Model.slx", sim_options);

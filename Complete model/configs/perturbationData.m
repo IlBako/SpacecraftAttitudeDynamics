@@ -31,11 +31,18 @@ function pert_data = perturbationData()
     % Residual dipole of the spacecraft [A*m^2]
     dip_sc = [0.01 0.05 0.01];
 
+    g01 = -29404.8;
+    g11 = -1450.9;
+    h11 = 4652.5;
+    % H0
+    H0 = sqrt(g01^2 + g11^2 + h11^2);
+
     %% Output
     pert_data.Fe = Fe;
     pert_data.h0_vect = h0_vect;
     pert_data.rho0_vect = rho0_vect;
     pert_data.H_vect = H_vect;
     pert_data.dip_sc = dip_sc;
+    pert_data.H0 = H0;
 
 end

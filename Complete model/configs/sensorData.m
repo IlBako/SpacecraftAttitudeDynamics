@@ -5,7 +5,7 @@ function sensor_data = sensorData()
     % [T] Full scale measurement of the sensor (range is +-)
     magnetometer.FSS = 100e-6;
     % [%] Accuracy of the sensor
-    magnetometer.acc = 0.5;
+    magnetometer.acc = 0.05;
     % [%] Non-linearity of the sensor
     magnetometer.lin = 0.015;
     % [V/T] Sensitivity of the sensor

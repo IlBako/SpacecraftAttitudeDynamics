@@ -16,15 +16,15 @@ ylabel("$\omega$ [rad/s]", 'Interpreter','latex');
 legend("$\omega_x$", "$\omega_y$", "$\omega_z$", 'Location','northeast', 'Interpreter', 'latex');
 
 % Plot - disturbs
-% figure()
-% plot(out.time, vecnorm(out.perturbations_I_M_GG, 2, 2), 'LineWidth', 1);
-% grid on, hold on
-% plot(out.time, vecnorm(out.perturbations_I_M_Mag, 2, 2), 'LineWidth', 1);
-% plot(out.time, vecnorm(out.perturbations_I_M_SRP, 2, 2), 'LineWidth', 1);
-% xlabel("Time\ [s]", 'Interpreter','latex');
-% ylabel("$\dot{omega}$ [rad/s]", 'Interpreter','latex');
-% legend("$GG$", "$MAG$", "$SRP$", 'Location','northeast', 'Interpreter', 'latex');
-% title("Disturbances");
+figure()
+plot(out.time, vecnorm(out.T_GG, 2, 2), 'LineWidth', 1, 'DisplayName', 'Gravity Gradient');
+grid on, hold on
+plot(out.time, vecnorm(out.T_Mag, 2, 2), 'LineWidth', 1, 'DisplayName', 'Magnetic');
+plot(out.time, vecnorm(out.T_aero, 2, 2), 'LineWidth', 1, 'DisplayName', 'Aerodynamic drag');
+xlabel("Time\ [s]", 'Interpreter','latex');
+ylabel("T $[N*m]$", 'Interpreter','latex');
+legend('Location','northeast', 'Interpreter', 'latex');
+title("Disturbances moment");
 
 % Plot - kinetic energy
 figure()
@@ -35,6 +35,17 @@ title("Kinetic energy")
 xlabel("Time\ [s]", 'Interpreter','latex');
 ylabel("T [J]", 'Interpreter','latex');
 legend("Kinetic Energy", 'Location','northeast', 'Interpreter', 'latex');
+
+figure();
+plot(out.time, out.dynamics_omega, 'LineWidth', 1); 
+hold on; grid on; 
+plot(out.time, out.kepler_th_dot, 'LineWidth', 1.5); 
+for i=0:floor(out.time(end)/orbit_data.T)
+    xline(out.time(1) + i*orbit_data.T, 'k--', 'LineWidth', 0.25, 'HandleVisibility','off');
+end
+xlabel("Time\ [s]", 'Interpreter','latex');
+ylabel("$\omega\ [rad/s]$", 'Interpreter','latex');
+legend('$\omega_x$', '$\omega_y$', '$\omega_z$', '$\dot{\theta}$', 'Interpreter', 'latex');
 
 % Plot - err om_BL
 % figure

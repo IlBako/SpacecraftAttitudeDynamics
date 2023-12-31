@@ -14,6 +14,7 @@ function orbit_data = orbitData()
 
     % Orbit eccentricity [-]
     e = 0.17;
+    % e = 0;
     % e = 0.00771;
 
     % Orbit inclination [rad]

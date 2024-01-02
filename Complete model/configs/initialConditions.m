@@ -1,4 +1,4 @@
-function in_cond = initialConditions(n_eth)
+function in_cond = initialConditions(orbit_data)
     % Output a struct containing all the initial conditions:
     %   - w0:       Initial angular velocity [rad/s]
     %   - A0:       Initial dcm attitude [-]
@@ -19,8 +19,12 @@ function in_cond = initialConditions(n_eth)
     wr0 = 0;
     % wr0 = 8.8234;
 
+    [rr, vv] = kep2car(orbit_data.a, orbit_data.e, orbit_data.i, 0,0,0, astroConstants(13));
+
     in_cond.w0 = w0;
     in_cond.A0 = A0;
     in_cond.theta0 = theta0;
     in_cond.wr0 = wr0;
+    in_cond.r0 = rr;
+    in_cond.v0 = vv;
 end

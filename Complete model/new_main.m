@@ -47,20 +47,17 @@ in_cond.wr0 = 0;
 
 in_cond.q0 = dcm2quat(in_cond.A0);
 
-alphaHS=1/10;
-alphaSS=1/50;
-ctrFreq = 1/10;
-toll = 1e-1;
+
 pointing_k1 = 1*max(diag(sc_data.I_mat))/min(diag(sc_data.I_mat))*ones(1,3);
 pointing_k2 = -1e-3*diag(sc_data.I_mat) .* [1 1 1]';
 % pointing_k2 = 0;
-% pointing_k1 = 10*max(diag(sc_data.I_mat))/min(diag(sc_data.I_mat)).*ones(3,1);
-% pointing_k2 = -0.1*diag(sc_data.I_mat) .* [1 1 1]';
+% pointing_k1 = 1*max(diag(sc_data.I_mat))/min(diag(sc_data.I_mat))*ones(1,3);
+% pointing_k2 = -1e-3*diag(sc_data.I_mat) .* [1 1 1]';
 % pointing_k1 = sc_data.I_mat(3,3)/sc_data.I_mat(1,1)*[1 1 1];
 % pointing_k2 = -0.5*diag(sc_data.I_mat) .* [1 1 1]';
 
 [rr, vv] = kep2car(orbit_data.a, orbit_data.e, orbit_data.i, 0,0,0, astro_data.muE);
-in_x = rr/norm(rr); in_z = cross(rr, vv)/norm(cross(rr, vv)); in_y = cross(in_z, in_x)/norm(cross(in_z, in_x));
+in_z = rr/norm(rr); in_y = cross(rr, vv)/norm(cross(rr, vv)); in_x = cross(in_y, in_z)/norm(cross(in_y, in_z));
 A_LN0 = [in_x' in_y' in_z'];
 
 %% Setup simulink options
@@ -83,8 +80,8 @@ switch alg_idx
 
     case 2  % Pointing
         algorithm = alg_vec{2};
-        sim_options.StopTime = '10*orbit_data.T';
-        in_cond.w0 = [2e-3 -3e-3 -2e-5];
+        sim_options.StopTime = '3*orbit_data.T';
+        in_cond.w0 = [-2e-3 3e-3 -5e-4];
         % in_cond.A0 = A_LN0;
         point = sim("Model.slx", sim_options);
 

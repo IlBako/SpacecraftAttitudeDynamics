@@ -15,6 +15,27 @@ xlabel("Time\ [s]", 'Interpreter','latex');
 ylabel("$\omega$ [rad/s]", 'Interpreter','latex');
 legend("$\omega_x$", "$\omega_y$", "$\omega_z$", 'Location','northeast', 'Interpreter', 'latex');
 
+figure()
+plot(out.time, out.Mc, 'LineWidth', 1);
+title("Control moment");
+xlabel("Time \[s]", 'Interpreter', 'latex');
+ylabel("$M_c\ [N*m]$", 'Interpreter','latex');
+
+figure();
+subplot(2,1,1);
+plot(out.time, out.Mc);%, 'LineWidth', 1);
+title("Control moment");
+xlabel("Time \[s]", 'Interpreter', 'latex');
+ylabel("$M_c\ [N*m]$", 'Interpreter','latex');
+legend("$M_{c\_x}$", "$M_{c\_y}$", "$M_{c\_z}$", 'Interpreter', 'latex');
+
+subplot(2,1,2);
+plot(out.time, out.MC_actuators);
+title("Actuator control moment");
+xlabel("Time \[s]", 'Interpreter', 'latex');
+ylabel("$M_c\ [N*m]$", 'Interpreter','latex');
+legend("$M_c\_x$", "$M_c\_y$", "$M_c\_z$", 'Interpreter', 'latex');
+
 % Plot - disturbs
 figure()
 plot(out.time, vecnorm(out.T_GG, 2, 2), 'LineWidth', 1, 'DisplayName', 'Gravity Gradient');

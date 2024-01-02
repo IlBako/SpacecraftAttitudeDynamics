@@ -23,9 +23,6 @@ function sc_data = spaceCraftData()
     % NOTE: The inverse is calculated before hand to save computation time
     % as the inertia matrix does not change during the mission
 
-    % Inertia moment of inertia wheel [Kg*m^2]
-    Ir = [0 0 3.183e-2];
-
     % Normals to body 
     NB = [ 1  0  0;      % Body 1       
            0  1  0;      % Body 2
@@ -71,7 +68,7 @@ function sc_data = spaceCraftData()
 
     sc_data.I_mat = I_mat;
     sc_data.I_inv = I_inv;
-    sc_data.Ir = Ir;
+    % sc_data.Ir = Ir;
     sc_data.NB = NB;
     sc_data.rhoS = rhoS;
     sc_data.rhoD = rhoD;

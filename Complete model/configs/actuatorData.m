@@ -1,8 +1,8 @@
 function act_data = actuatorData()
 
 
-    hr_max = 100; % [N*m*s]
-    max_omega = 4200*2*pi/60; % [rad/s] 
+    hr_max = 50; % [N*m*s]
+    max_omega = 4000*2*pi/60; % [rad/s] 
     hr_nom = hr_max/3; % [N*m*s] Nominal rotation speed
     % hr_nom = 0;
     Ir = hr_max/max_omega;

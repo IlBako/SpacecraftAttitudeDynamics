@@ -47,7 +47,7 @@ in_cond.wr0 = 0;
 
 in_cond.q0 = dcm2quat(in_cond.A0);
 
-
+pointing_toll = deg2rad(5);
 pointing_k1 = 1*max(diag(sc_data.I_mat))/min(diag(sc_data.I_mat))*ones(1,3);
 pointing_k2 = -1e-3*diag(sc_data.I_mat) .* [1 1 1]';
 % pointing_k2 = 0;
@@ -80,7 +80,7 @@ switch alg_idx
 
     case 2  % Pointing
         algorithm = alg_vec{2};
-        sim_options.StopTime = '3*orbit_data.T';
+        sim_options.StopTime = '5*orbit_data.T';
         in_cond.w0 = [-2e-3 3e-3 -5e-4];
         % in_cond.A0 = A_LN0;
         point = sim("Model.slx", sim_options);

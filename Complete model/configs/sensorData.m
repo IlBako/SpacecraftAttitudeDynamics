@@ -35,29 +35,18 @@ function sensor_data = sensorData()
                             sin(a(2))*cos(b(2))     cos(a(2))               sin(a(2))*sin(b(2));
                             sin(a(3))*cos(b(3))     sin(a(3))*sin(b(3))     cos(a(3))];
 
-    %% Output
+    %% Earth horizon sensor (range is +-)
 
-    sensor_data.magnetometer = magnetometer;
-    %% % [deg] Full scale measurement of the sensor (range is +-)
-    horizon.FSS.pitch =5.5 ;
-    horizon.FSS.roll =2.5;
-    % [rad] Accuracy of the sensor
-    horizon.acc =deg2rad(0.07) ;
-    % % [%] Non-linearity of the sensor
-    % horizon.lin = ;
-    % % [] Sensitivity of the sensor
-    % horizon.sens = ;
-    % % [] Standard deviation of the sensor
-    % horizon.std_dev = sqrt(horizon.acc ^ 2 + horizon.lin^2)/sqrt(3) * horizon.FSS / 100;
-    % % [] Variance of the sensor
-    % horizon.variance = magnetometer.std_dev^2;
-    % % [V] Quantization interval in Volt
-    % V_quant = ;
-    % % [] Quantization in Tesla
-    % horizon.T_quant = V_quant/horizon.sens;
+    % [rad] Accuracy of the sensor (0.05deg at 3 sigma)
+    horizon.acc = deg2rad(0.07)/3;
+    % Misalignment error
+    horizon.misalign = deg2rad(0.5);
     % [Hz] Frequency of the sensor
     horizon.freq = 10;
     
+    %% Output
+
+    sensor_data.magnetometer = magnetometer;
     sensor_data.horizon = horizon;
 
 end

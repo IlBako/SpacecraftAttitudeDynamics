@@ -29,7 +29,7 @@ function pert_data = perturbationData()
     %% Magnetic perturbation
 
     % Residual dipole of the spacecraft [A*m^2]
-    dip_sc = [0.01 0.05 0.01];
+    dip_sc = [0.05 0.05 0.05];
 
     g01 = -29404.8;
     g11 = -1450.9;

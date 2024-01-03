@@ -14,15 +14,15 @@ function orbit_data = orbitData()
     % a = 16671;
 
     % Orbit eccentricity [-]
-    % e = 0.1678;
-    e = 0;
+    e = 0.1678;
+    % e = 0;
     % e = 0.00771;
 
     % Orbit inclination [rad]
     % i = pi/6;
-    i = deg2rad(50.3442);
+    % i = deg2rad(50.3442);
     % i = deg2rad(40.901);
-    % i = 0;
+    i = 0;
 
     % Orbit's period [s]
     T = 2*pi*sqrt(a^3/astroConstants(13));

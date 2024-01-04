@@ -36,7 +36,7 @@ stlName = "Satellite.STL";
 
 percent_start = 0;              % simulation perc. for animation start. point
 step_size = 50;
-animation_length = 5000;        % number of frames displayed (total)
+animation_length = 0;        % number of frames displayed (total)
 
 attitudeAnimation2(A, P, T, stlName, percent_start, step_size, animation_length, 1);
 

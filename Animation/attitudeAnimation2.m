@@ -43,7 +43,16 @@ k = 0;
 TR_frame_vect(1:length(n_start:step_size:n_end), 1) = {NaN(1,1)};
 for i = n_start:step_size:n_end
     k = k + 1;
-    [TR_frame1] = stlHandle_internal(TR, A(1:3,1:3,i), P(i,:));
+    % A_new = A(:,:,i) * A_LN(:,:,i); % rotazione opposta, il resto è perfetto
+    % A_new = A_LN(:,:,i)'; % fisso per osservatore lvlh
+    % A_new = A(:,:,i); % ruota intorno ad asse per osservatore inerziale
+    % target A_LB
+    % A_LB = A_LN * A_NB = A_LN * (A_BN)'
+    % A_new = A_LN(:,:,i) * A(:,:,i)';
+
+    A_new = A(:,:,i)';
+
+    [TR_frame1] = stlHandle_internal(TR, A_new, P(i,:));
     TR_frame_vect{k} = TR_frame1;
 end
 

@@ -34,7 +34,7 @@ P = out.kepler_r_vec;           % radius of orbit
 T = out.kepler_theta;           % theta of orbit
 stlName = "Satellite.STL";
 
-percent_start = 0;              % simulation perc. for animation start. point
+percent_start = 99;              % simulation perc. for animation start. point
 step_size = 50;
 animation_length = 0;        % number of frames displayed (total)
 

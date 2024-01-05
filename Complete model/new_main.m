@@ -7,7 +7,6 @@ addpath("utils\");
 %% Input handling
 
 % Algorithm choice
-
 alg_vec = {'De-tumbling', 'Pointing', 'De-tumbling + pointing', 'No Control'};
 
 alg_in = 'Select the algorithm to use by typing the corresponding number: \n';
@@ -17,17 +16,34 @@ end
 alg_idx = input(alg_in, "s");
 alg_idx = str2double(alg_idx);
 
-if alg_idx < 1 || alg_idx > length(alg_vec)
+if alg_idx < 1 || alg_idx > length(alg_vec) || isnan(alg_idx)
     error("Please insert a number between 1 and %d", length(alg_vec));
 end
 
 % Plots choice
-plot_gen = input("Do you want to generate plots? (please answer with 'yes' or 'no'):  ", 's');
-
-if strcmpi(plot_gen, 'yes')
-    save_plots = input("Do you want to save the plots in either png or pdf?\n" + ...
-        "(please answer with 'png', 'pdf' or 'no'):  ", 's');
+keepAsking1 = 1;
+keepAsking2 = 1;
+while keepAsking1
+    plot_gen = input("Do you want to generate plots? (please answer with 'yes' or 'no'):  ", 's');
+    
+    if strcmpi(plot_gen, 'yes') || strcmpi(plot_gen, 'y')
+        while keepAsking2
+            save_plots = input("Do you want to save the plots in either png or pdf?\n" + ...
+                "(please answer with 'png', 'pdf' or 'no'):  ", 's');
+            if strcmpi(save_plots, 'png') || strcmpi(save_plots, 'pdf') || strcmpi(save_plots, 'no')
+                keepAsking2 = 0;
+            end
+        end
+        keepAsking1 = 0;
+    elseif strcmpi(plot_gen, 'no') || strcmpi(plot_gen, 'n')
+        keepAsking1 = 0;
+    end
 end
+
+clc
+fprintf("Algorithm: '" + alg_vec(alg_idx) + "', plots generator: '" + plot_gen + "' and save plots: '" + save_plots + "'\n")
+disp("Running simulation...")
+tic
 
 % alg_idx = 4; plot_gen = 'yes'; save_plots = 'no';
 
@@ -76,7 +92,7 @@ switch alg_idx
     case 1  % De-tumbling
         algorithm = alg_vec{1};
         actuator_data.hr_nom = 0;
-        de_tumb = sim("Model.slx", sim_options);   
+        detumb = sim("Model.slx", sim_options);   
 
     case 2  % Pointing
         algorithm = alg_vec{2};
@@ -88,7 +104,7 @@ switch alg_idx
     case 3  % De-tumbling + pointing
         algorithm = alg_vec{1};
         actuator_data.hr_nom = 0;
-        de_tumb = sim("Model.slx", sim_options);
+        detumb_point = sim("Model.slx", sim_options);
 
     case 4  % No Control
         algorithm = alg_vec{4};
@@ -100,6 +116,29 @@ end
 
 %% Plots
 
-if strcmp(plot_gen, 'yes')
+if strcmp(plot_gen, 'yes') || strcmp(plot_gen, 'y')
     generatePlots;
 end
+
+disp("Simulation finished! Time elapsed: " + toc + " seconds")
+
+%% Animation
+
+switch alg_idx
+    case 1  % De-tumbling
+        out = detumb;   
+    case 2  % Pointing
+        out = point;
+    case 3  % De-tumbling + pointing
+        out = detumb_point;
+    case 4  % No Control
+        out = no_cont;
+end
+
+percent_start = 90;
+step_size = 50;
+animation_length = 0;
+cam_choice = 1;
+
+attitudeAnimation(out.A_BN_Sens, out.kepler_r_vec, out.kepler_theta, "Satellite.STL", percent_start, step_size, animation_length, cam_choice);
+

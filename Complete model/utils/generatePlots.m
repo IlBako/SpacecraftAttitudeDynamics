@@ -1,5 +1,7 @@
-if exist("de_tumb", 'var')
-    out = de_tumb;
+if exist("detumb", 'var')
+    out = detumb;
+elseif exist("detumb_point", 'var')
+    out = detumb_point;
 elseif exist("no_cont", 'var')
     out = no_cont;
 elseif exist("point", 'var')

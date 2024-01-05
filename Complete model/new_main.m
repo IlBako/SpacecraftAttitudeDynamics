@@ -10,26 +10,26 @@ addpath("utils\");
 
 alg_vec = {'De-tumbling', 'Pointing', 'De-tumbling + pointing', 'No Control'};
 
-% alg_in = 'Select the algorithm to use by typing the corresponding number: \n';
-% for i=1:length(alg_vec)
-%     alg_in = strcat(alg_in, num2str(i) + ". " + alg_vec{i} + " \n");
-% end
-% alg_idx = input(alg_in, "s");
-% alg_idx = str2double(alg_idx);
-% 
-% if alg_idx < 1 || alg_idx > length(alg_vec)
-%     error("Please insert a number between 1 and %d", length(alg_vec));
-% end
-% 
-% % Plots choice
-% plot_gen = input("Do you want to generate plots? (please answer with 'yes' or 'no'):  ", 's');
-% 
-% if strcmpi(plot_gen, 'yes')
-%     save_plots = input("Do you want to save the plots in either png or pdf?\n" + ...
-%         "(please answer with 'png', 'pdf' or 'no'):  ", 's');
-% end
+alg_in = 'Select the algorithm to use by typing the corresponding number: \n';
+for i=1:length(alg_vec)
+    alg_in = strcat(alg_in, num2str(i) + ". " + alg_vec{i} + " \n");
+end
+alg_idx = input(alg_in, "s");
+alg_idx = str2double(alg_idx);
 
-alg_idx = 2; plot_gen = 'yes'; save_plots = 'no';
+if alg_idx < 1 || alg_idx > length(alg_vec)
+    error("Please insert a number between 1 and %d", length(alg_vec));
+end
+
+% Plots choice
+plot_gen = input("Do you want to generate plots? (please answer with 'yes' or 'no'):  ", 's');
+
+if strcmpi(plot_gen, 'yes')
+    save_plots = input("Do you want to save the plots in either png or pdf?\n" + ...
+        "(please answer with 'png', 'pdf' or 'no'):  ", 's');
+end
+
+% alg_idx = 4; plot_gen = 'yes'; save_plots = 'no';
 
 %% Run configs
 
@@ -80,7 +80,7 @@ switch alg_idx
 
     case 2  % Pointing
         algorithm = alg_vec{2};
-        sim_options.StopTime = '5*orbit_data.T';
+        sim_options.StopTime = '25*orbit_data.T';
         in_cond.w0 = [-2e-3 3e-3 -5e-4];
         % in_cond.A0 = A_LN0;
         point = sim("Model.slx", sim_options);
@@ -92,7 +92,7 @@ switch alg_idx
 
     case 4  % No Control
         algorithm = alg_vec{4};
-        sim_options.StopTime = '10*orbit_data.T';
+        sim_options.StopTime = '5*orbit_data.T';
         in_cond.w0 = [4e-4 3e-3 3e-4];
         no_cont = sim("Model.slx", sim_options);
 

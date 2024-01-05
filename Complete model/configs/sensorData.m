@@ -38,7 +38,7 @@ function sensor_data = sensorData()
     %% Earth horizon sensor (range is +-)
 
     % [rad] Accuracy of the sensor (0.05deg at 3 sigma)
-    horizon.acc = deg2rad(0.07)/3;
+    horizon.acc = deg2rad(0.05)/3;
     % Misalignment error
     horizon.misalign = deg2rad(0.5);
     % [Hz] Frequency of the sensor

@@ -15,6 +15,7 @@ xlabel("Time\ [s]", 'Interpreter','latex');
 ylabel("$\omega$ [rad/s]", 'Interpreter','latex');
 legend("$\omega_x$", "$\omega_y$", "$\omega_z$", 'Location','northeast', 'Interpreter', 'latex');
 
+if alg_idx == 2
 figure()
 plot(out.time, out.Mc, 'LineWidth', 1);
 title("Control moment");
@@ -35,6 +36,7 @@ title("Actuator control moment");
 xlabel("Time \[s]", 'Interpreter', 'latex');
 ylabel("$M_c\ [N*m]$", 'Interpreter','latex');
 legend("$M_c\_x$", "$M_c\_y$", "$M_c\_z$", 'Interpreter', 'latex');
+end
 
 % Plot - disturbs
 figure()
@@ -47,6 +49,17 @@ ylabel("T $[N*m]$", 'Interpreter','latex');
 legend('Location','northeast', 'Interpreter', 'latex');
 title("Disturbances moment");
 
+figure()
+subplot(3,1,1)
+plot(out.time, vecnorm(out.T_GG, 2, 2), 'LineWidth', 1);
+title("Gravity Gradient");
+subplot(3,1,2)
+plot(out.time, vecnorm(out.T_Mag, 2, 2), 'LineWidth', 1);
+title("Magnetic");
+subplot(3,1,3)
+plot(out.time, vecnorm(out.T_aero, 2, 2), 'LineWidth', 1);
+title("Aerodynamic drag");
+
 % Plot - kinetic energy
 figure()
 T = 0.5 * (sc_data.I_mat(1,1)*out.dynamics_omega(:,1).^2 + sc_data.I_mat(2,2)*out.dynamics_omega(:,2).^2 + sc_data.I_mat(3,3)*out.dynamics_omega(:,3).^2);
@@ -57,6 +70,7 @@ xlabel("Time\ [s]", 'Interpreter','latex');
 ylabel("T [J]", 'Interpreter','latex');
 legend("Kinetic Energy", 'Location','northeast', 'Interpreter', 'latex');
 
+if alg_idx == 2
 figure();
 plot(out.time, out.dynamics_omega, 'LineWidth', 1); 
 hold on; grid on; 
@@ -67,6 +81,7 @@ end
 xlabel("Time\ [s]", 'Interpreter','latex');
 ylabel("$\omega\ [rad/s]$", 'Interpreter','latex');
 legend('$\omega_x$', '$\omega_y$', '$\omega_z$', '$\dot{\theta}$', 'Interpreter', 'latex');
+end
 
 % Plot - err om_BL
 % figure

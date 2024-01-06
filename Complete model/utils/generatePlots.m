@@ -1,13 +1,26 @@
-if exist("detumb", 'var')
-    out = detumb;
-elseif exist("detumb_point", 'var')
-    out = detumb_point;
-elseif exist("no_cont", 'var')
-    out = no_cont;
-elseif exist("point", 'var')
-    out = point;
+%%% STYLE SETTINGS
+set(groot,"defaulttextinterpreter","latex");
+set(groot,"defaultAxesTickLabelInterpreter","latex");
+set(groot,"defaultLegendInterpreter","latex");
+set(groot,"defaultAxesFontSize", 16);
+set(0, 'defaultLineLineWidth', 1);
+
+
+switch alg_idx
+    case 1
+        plotDetumb(detumb, sc_data);
+    case 2
+        plotPoint();
+    case 3
+        plotDetumb(detumb, sc_data);
+        plotPoint();
+    case 4
+        plotNoCont(no_cont, orbit_data, sc_data);
 end
 
+
+return
+out = no_cont;
 % Plot - om
 figure()
 plot(out.time, out.dynamics_omega, 'LineWidth', 1);
@@ -51,16 +64,35 @@ ylabel("T $[N*m]$", 'Interpreter','latex');
 legend('Location','northeast', 'Interpreter', 'latex');
 title("Disturbances moment");
 
-figure()
-subplot(3,1,1)
-plot(out.time, vecnorm(out.T_GG, 2, 2), 'LineWidth', 1);
-title("Gravity Gradient");
-subplot(3,1,2)
-plot(out.time, vecnorm(out.T_Mag, 2, 2), 'LineWidth', 1);
-title("Magnetic");
-subplot(3,1,3)
-plot(out.time, vecnorm(out.T_aero, 2, 2), 'LineWidth', 1);
-title("Aerodynamic drag");
+if alg_idx == 3
+    figure()
+    subplot(3,1,1)
+    plot(out.time, vecnorm(out.T_GG, 2, 2), 'LineWidth', 1);
+    title("Gravity Gradient");
+    xticks([orbit_data.T/4, orbit_data.T/2, 3*orbit_data.T/4, orbit_data.T])
+    xticklabels(["T/4", "T/2", "3T/4", "T"]);
+    subplot(3,1,2)
+    plot(out.time, vecnorm(out.T_Mag, 2, 2), 'LineWidth', 1);
+    title("Magnetic");
+    xticks([orbit_data.T/4, orbit_data.T/2, 3*orbit_data.T/4, orbit_data.T])
+    xticklabels(["T/4", "T/2", "3T/4", "T"]);
+    subplot(3,1,3)
+    plot(out.time, vecnorm(out.T_aero, 2, 2), 'LineWidth', 1);
+    title("Aerodynamic drag");
+    xticks([orbit_data.T/4, orbit_data.T/2, 3*orbit_data.T/4, orbit_data.T])
+    xticklabels(["T/4", "T/2", "3T/4", "T"]);
+else
+    figure()
+    subplot(3,1,1)
+    plot(out.time, vecnorm(out.T_GG, 2, 2), 'LineWidth', 1);
+    title("Gravity Gradient");
+    subplot(3,1,2)
+    plot(out.time, vecnorm(out.T_Mag, 2, 2), 'LineWidth', 1);
+    title("Magnetic");
+    subplot(3,1,3)
+    plot(out.time, vecnorm(out.T_aero, 2, 2), 'LineWidth', 1);
+    title("Aerodynamic drag");
+end
 
 % Plot - kinetic energy
 figure()
@@ -117,7 +149,108 @@ end
 % Plot - orbit
 figure()
 earthPlot();
-plot3(out.kepler_r_vec(:,1), out.kepler_r_vec(:,2), out.kepler_r_vec(:,3), 'LineWidth', 1);
+plot3(out.kepler_r_int(:,1), out.kepler_r_int(:,2), out.kepler_r_int(:,3), 'LineWidth', 1);
 grid on, axis equal
 view(30, 20)
 title("Orbit")
+
+function plotDetumb(detumb, sc_data)
+    out = detumb;
+
+    % Angular velocities
+    figure()
+    plot(out.time, out.dynamics_omega);
+    grid on;
+    title("Angular velocities");
+    xlabel("Time\ [s]", 'Interpreter','latex');
+    ylabel("$\omega$ [rad/s]");
+    legend("$\omega_x$", "$\omega_y$", "$\omega_z$", 'Location','northeast', 'Interpreter', 'latex');
+
+    % Kinetic energy
+    figure()
+    T = 0.5 * (sc_data.I_mat(1,1)*out.dynamics_omega(:,1).^2 + sc_data.I_mat(2,2)*out.dynamics_omega(:,2).^2 + sc_data.I_mat(3,3)*out.dynamics_omega(:,3).^2);
+    plot(out.time, T)
+    grid on
+    title("Kinetic energy")
+    xlabel("Time\ [s]", 'Interpreter','latex');
+    ylabel("T [J]", 'Interpreter','latex');
+    legend("Kinetic Energy", 'Location','northeast', 'Interpreter', 'latex');
+
+    plot(out.time, out.MC_actuators);
+    title("Actuator control moment");
+    xlabel("Time \[s]", 'Interpreter', 'latex');
+    ylabel("$M_c\ [N*m]$", 'Interpreter','latex');
+    legend("$M_c\_x$", "$M_c\_y$", "$M_c\_z$", 'Interpreter', 'latex');
+
+end
+
+function plotNoCont(no_cont, orbit_data, sc_data)
+    out = no_cont;
+
+    % Angular velocities
+    figure()
+    plot(out.time, out.dynamics_omega);
+    grid on;
+    title("Angular velocities");
+    xlabel("Time\ [s]", 'Interpreter','latex');
+    ylabel("$\omega$ [rad/s]");
+    legend("$\omega_x$", "$\omega_y$", "$\omega_z$", 'Location','northeast', 'Interpreter', 'latex');
+
+    % Disturbances norm
+    figure()
+    plot(out.time, vecnorm(out.T_GG, 2, 2), 'DisplayName', 'Gravity Gradient');
+    grid on, hold on
+    plot(out.time, vecnorm(out.T_Mag, 2, 2), 'DisplayName', 'Magnetic');
+    plot(out.time, vecnorm(out.T_aero, 2, 2), 'DisplayName', 'Aerodynamic drag');
+    xlabel("Time\ [s]", 'Interpreter','latex');
+    ylabel("T $[N*m]$", 'Interpreter','latex');
+    legend('Location','northeast');
+    title("Disturbances moment");
+
+    figure()
+    subplot(3,1,1)
+    plot(out.time, out.T_GG);
+    title("Gravity Gradient");
+    xticks([orbit_data.T/4, orbit_data.T/2, 3*orbit_data.T/4, orbit_data.T])
+    xticklabels(["T/4", "T/2", "3T/4", "T"]);
+    legend("X axis", "Y axis", "Z axis");
+    subplot(3,1,2)
+    plot(out.time, out.T_Mag);
+    title("Magnetic");
+    xticks([orbit_data.T/4, orbit_data.T/2, 3*orbit_data.T/4, orbit_data.T])
+    xticklabels(["T/4", "T/2", "3T/4", "T"]);
+    legend("X axis", "Y axis", "Z axis");
+    subplot(3,1,3)
+    plot(out.time, out.T_aero);
+    title("Aerodynamic drag");
+    xticks([orbit_data.T/4, orbit_data.T/2, 3*orbit_data.T/4, orbit_data.T])
+    xticklabels(["T/4", "T/2", "3T/4", "T"]);
+    legend("X axis", "Y axis", "Z axis");
+
+    % Kinetic energy
+    figure()
+    T = 0.5 * (sc_data.I_mat(1,1)*out.dynamics_omega(:,1).^2 + sc_data.I_mat(2,2)*out.dynamics_omega(:,2).^2 + sc_data.I_mat(3,3)*out.dynamics_omega(:,3).^2);
+    plot(out.time, T)
+    grid on
+    title("Kinetic energy")
+    xlabel("Time\ [s]", 'Interpreter','latex');
+    ylabel("T [J]", 'Interpreter','latex');
+    legend("Kinetic Energy", 'Location','northeast', 'Interpreter', 'latex');
+
+    % Orbit
+    figure()
+    earthPlot();
+    plot3(out.kepler_r_int(:,1), out.kepler_r_int(:,2), out.kepler_r_int(:,3));
+    grid on, axis equal
+    view(30, 20)
+    title("Orbit")
+    
+    % Pointing accuracy
+    figure()
+    plot(out.time, out.Pointing_accuracy);
+    grid on
+    title("Pointing accuracy");
+    xlabel("Time [s]");
+    ylabel("Error [deg]");
+    
+end

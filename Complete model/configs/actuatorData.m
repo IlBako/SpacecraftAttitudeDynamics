@@ -9,7 +9,7 @@ function act_data = actuatorData()
 
     hr_dot_max = 0.2; %[Nm]
 
-    act_data.D_max = 140; %[Am^2] linear dipole moment 
+    act_data.D_max = 250; %[Am^2] linear dipole moment 
     act_data.wr_nom = wr_nom; %[rad/s] nominal rotation speed
     act_data.hr_nom = hr_nom;
     act_data.hr_max_point = hr_max_point;

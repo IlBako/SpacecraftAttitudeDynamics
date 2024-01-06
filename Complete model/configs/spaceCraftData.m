@@ -36,7 +36,7 @@ function sc_data = spaceCraftData()
            0  0  1;      % Panel 3
            0  0 -1];     % Panel 4
 
-    % specular refelction coefficient
+
     rhoS_body = 0.5;
     rhoS_panel = 0.1;
     rhoS = [repmat(rhoS_body, 6, 1); repmat(rhoS_panel, 4, 1)];

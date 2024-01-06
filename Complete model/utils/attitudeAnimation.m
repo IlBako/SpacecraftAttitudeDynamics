@@ -175,7 +175,7 @@ function [TR] = stlImport_internal(stl_file_name)
     transposition = [min(gm.Points(:,1)) min(gm.Points(:,2)) min(gm.Points(:,3))];
     
     % points with centre of the body in [0 0 0]
-    new_points = (gm.Points - ones(size(gm.Points)).*(cm_body + transposition)) * 5e-2;     % should be * 1e-3 (was in mm)
+    new_points = (gm.Points - ones(size(gm.Points)).*(cm_body + transposition)) * 1e-1;     % should be * 1e-3 (was in mm)
     TR = triangulation(gm.ConnectivityList, new_points);
 end
 function [TR] = stlHandle_internal(TR, Rot_matrix, newPos)

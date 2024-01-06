@@ -23,6 +23,7 @@ end
 % Plots choice
 keepAsking1 = 1;
 keepAsking2 = 1;
+save_plots = "no";
 while keepAsking1
     plot_gen = input("Do you want to generate plots? (please answer with 'yes' or 'no'):  ", 's');
     
@@ -136,7 +137,7 @@ switch alg_idx
 end
 
 percent_start = 90;
-step_size = 50;
+step_size = 150;
 animation_length = 0;
 cam_choice = 1;
 

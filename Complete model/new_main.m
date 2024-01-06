@@ -22,19 +22,10 @@ end
 
 % Plots choice
 keepAsking1 = 1;
-keepAsking2 = 1;
 save_plots = "no";
 while keepAsking1
-    plot_gen = input("Do you want to generate plots? (please answer with 'yes' or 'no'):  ", 's');
-    
+    plot_gen = input("Do you want to generate plots? (please answer with 'yes' or 'no'):  ", 's');    
     if strcmpi(plot_gen, 'yes') || strcmpi(plot_gen, 'y')
-        while keepAsking2
-            save_plots = input("Do you want to save the plots in either png or pdf?\n" + ...
-                "(please answer with 'png', 'pdf' or 'no'):  ", 's');
-            if strcmpi(save_plots, 'png') || strcmpi(save_plots, 'pdf') || strcmpi(save_plots, 'no')
-                keepAsking2 = 0;
-            end
-        end
         keepAsking1 = 0;
     elseif strcmpi(plot_gen, 'no') || strcmpi(plot_gen, 'n')
         keepAsking1 = 0;
@@ -42,7 +33,7 @@ while keepAsking1
 end
 
 clc
-fprintf("Algorithm: '" + alg_vec(alg_idx) + "', plots generation: '" + plot_gen + "' and save plots: '" + save_plots + "'\n")
+fprintf("Algorithm: '" + alg_vec(alg_idx) + "', plots generation: '" + plot_gen + "'\n")
 disp("Running simulation...")
 tic
 
@@ -92,7 +83,7 @@ switch alg_idx
     case 2  % Pointing
         algorithm = alg_vec{2};
         sim_options.StopTime = '15*orbit_data.T';
-        in_cond.w0 = [-2e-3 3e-3 -5e-4];
+        in_cond.w0 = [5.5197e-04 0.0063 0.0078];
         point = sim("Model.slx", sim_options);
 
     case 3 % Detumbling and pointing

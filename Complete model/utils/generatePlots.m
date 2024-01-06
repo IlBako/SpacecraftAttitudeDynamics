@@ -8,12 +8,12 @@ set(0, 'defaultLineLineWidth', 1);
 
 switch alg_idx
     case 1
-        plotDetumb(detumb, sc_data);
+        plotDetumb(detumb, sc_data, orbit_data);
     case 2
-        plotPoint();
+        plotPoint(point, orbit_data, sc_data);
     case 3
         plotDetumb(detumb, sc_data);
-        plotPoint();
+        plotPoint(point, orbit_data, sc_data);
     case 4
         plotNoCont(no_cont, orbit_data, sc_data);
 end
@@ -154,13 +154,23 @@ grid on, axis equal
 view(30, 20)
 title("Orbit")
 
-function plotDetumb(detumb, sc_data)
+function plotDetumb(detumb, sc_data, orbit_data)
     out = detumb;
 
     % Angular velocities
     figure()
     plot(out.time, out.dynamics_omega);
     grid on;
+    if out.time(end)/orbit_data.T > 1
+        ticks = [orbit_data.T];
+        ticklabel = "T";
+        for i=2:floor(out.time(end)/orbit_data.T)
+            ticks = [ticks i*orbit_data.T];
+            ticklabel = [ticklabel num2str(i)+"T"];
+        end
+        xticks(ticks);
+        xticklabels(ticklabel);
+    end
     title("Angular velocities");
     xlabel("Time\ [s]", 'Interpreter','latex');
     ylabel("$\omega$ [rad/s]");
@@ -176,11 +186,108 @@ function plotDetumb(detumb, sc_data)
     ylabel("T [J]", 'Interpreter','latex');
     legend("Kinetic Energy", 'Location','northeast', 'Interpreter', 'latex');
 
+    figure()
     plot(out.time, out.MC_actuators);
     title("Actuator control moment");
     xlabel("Time \[s]", 'Interpreter', 'latex');
     ylabel("$M_c\ [N*m]$", 'Interpreter','latex');
+    legend("$M_{c\_x}$", "$M_{c\_y}$", "$M_{c\_z}$", 'Interpreter', 'latex');
+
+end
+
+function plotPoint(point, orbit_data, sc_data)
+    out = point;
+    
+    % Angular velocity with reference
+    figure();
+    plot(out.time, out.dynamics_omega); 
+    hold on; grid on; 
+    plot(out.time, out.kepler_th_dot, 'k--', 'LineWidth', 1.5); 
+    if out.time(end)/orbit_data.T > 1
+        ticks = [orbit_data.T];
+        ticklabel = "T";
+        for i=2:floor(out.time(end)/orbit_data.T)
+            ticks = [ticks i*orbit_data.T];
+            ticklabel = [ticklabel num2str(i)+"T"];
+        end
+        xticks(ticks);
+        xticklabels(ticklabel);
+    end
+    title("Angular velocity with reference")
+    xlabel("Time\ [s]", 'Interpreter','latex');
+    ylabel("$\omega\ [rad/s]$", 'Interpreter','latex');
+    legend('$\omega_x$', '$\omega_y$', '$\omega_z$', '$\dot{\theta}$', 'Interpreter', 'latex');
+    
+    % Pointing accuracy
+    figure()
+    plot(out.time, out.Pointing_accuracy);
+    grid on
+    if out.time(end)/orbit_data.T > 1
+        ticks = [orbit_data.T];
+        ticklabel = "T";
+        for i=2:floor(out.time(end)/orbit_data.T)
+            ticks = [ticks i*orbit_data.T];
+            ticklabel = [ticklabel num2str(i)+"T"];
+        end
+        xticks(ticks);
+        xticklabels(ticklabel);
+    end
+    title("Pointing accuracy");
+    xlabel("Time [s]");
+    ylabel("Error [deg]");
+
+     % Disturbances norm
+    figure()
+    plot(out.time, vecnorm(out.T_GG, 2, 2), 'DisplayName', 'Gravity Gradient');
+    grid on, hold on
+    plot(out.time, vecnorm(out.T_Mag, 2, 2), 'DisplayName', 'Magnetic');
+    plot(out.time, vecnorm(out.T_aero, 2, 2), 'DisplayName', 'Aerodynamic drag');
+    xlabel("Time\ [s]", 'Interpreter','latex');
+    ylabel("T $[Nm]$", 'Interpreter','latex');
+    legend('Location','northeast');
+    title("Disturbances moment");
+
+    % Kinetic energy
+    figure()
+    T = 0.5 * (sc_data.I_mat(1,1)*out.dynamics_omega(:,1).^2 + sc_data.I_mat(2,2)*out.dynamics_omega(:,2).^2 + sc_data.I_mat(3,3)*out.dynamics_omega(:,3).^2);
+    plot(out.time, T)
+    grid on
+    title("Kinetic energy")
+    xlabel("Time\ [s]", 'Interpreter','latex');
+    ylabel("T [J]", 'Interpreter','latex');
+    legend("Kinetic Energy", 'Location','northeast', 'Interpreter', 'latex');
+
+    % Control moment - control block
+    figure()
+    plot(out.time, out.Mc, 'LineWidth', 1);
+    title("Control moment required from control algorithm");
+    xlabel("Time\ [s]");
+    ylabel("$M_c\ [Nm]$");
     legend("$M_c\_x$", "$M_c\_y$", "$M_c\_z$", 'Interpreter', 'latex');
+
+    % Control moment from actuators
+    figure()
+    plot(out.time, out.MC_actuators);
+    title("Actuator control moment");
+    xlabel("Time\ [s]");
+    ylabel("$M_c\ [Nm]$");
+    legend("$M_c\_x$", "$M_c\_y$", "$M_c\_z$", 'Interpreter', 'latex');
+
+    % Actuators control moment - divided
+    figure()
+    subplot(2,1,1);
+    plot(out.time, out.MC_actuators(:, [1 3]));
+    legend("$Mc_x$", "$Mc_z$");
+    title("Magnetorquers required Torque");
+    xlabel("$Time\ [s]$");
+    ylabel("$M_c\ [Nm]$");
+
+    subplot(2,1,2)
+    plot(out.time, out.MC_actuators(:, 2));
+    legend("$Mc_y$");
+    title("$\dot{h}_y$ wheel required Torque")
+    xlabel("$Time\ [s]$");
+    ylabel("$M_c\ [Nm]$")
 
 end
 
@@ -244,6 +351,9 @@ function plotNoCont(no_cont, orbit_data, sc_data)
     grid on, axis equal
     view(30, 20)
     title("Orbit")
+    xlabel("X axis [Km]");
+    ylabel("Y axis [Km]");
+    zlabel("Z axis [Km]");
     
     % Pointing accuracy
     figure()
